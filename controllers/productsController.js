@@ -1,10 +1,28 @@
+const Product = require('../database/models/products')
+
 const getAllProductsStatic = async (req,res) => {
-    res.send('get all products static')
+    const regex = /b/i
+    const products = await Product.find({name: regex})
+    res.status(200).json({products, nbHits: products.length })
 }
 
 
 const getAllProducts = async (req,res) => {
-    res.send('get all products')
+    const {featured, company, name} = req.query
+    const queryObject = {}
+    
+    if(featured) {
+        queryObject.featured = featured === 'true'? true : false
+    }
+    if(company) {
+        queryObject.company = company
+    }
+    if(name) {
+        queryObject.name = { $regex: name, $options: 'i'}
+    }
+
+    const products = await Product.find(queryObject)
+    res.status(200).json({products, nbHits: products.length})
 }
 
 module.exports = {
