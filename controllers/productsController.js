@@ -5,7 +5,7 @@ const getAllProductsStatic = async (req,res) => {
     res.status(200).json({products, nbHits: products.length })
 }
 
-
+//query rest api look like: domainName/api/v1/products?featured=true&comapny=ikea
 const getAllProducts = async (req,res) => {
     const {featured, company, name, sort, select, numericFilters} = req.query
     const queryObject = {}
